@@ -1,2 +1,2 @@
 all:
-	gcc main.c -o main `pkg-config --cflags --libs elementary` -g
+	gcc car.c -o car `pkg-config --cflags --libs elementary` -g
