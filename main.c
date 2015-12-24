@@ -1,6 +1,3 @@
-/*
- * gcc main.c -o main `pkg-config --cflags --libs elementary` -g
- */
 #include <Elementary.h>
 
 Evas_Object *box, *en1, *en2;
