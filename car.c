@@ -60,17 +60,56 @@ create_cars(void)
 }
 
 void
+_popup_close_cb(void *data, Evas_Object *obj EINA_UNUSED,
+                void *event_info EINA_UNUSED)
+{
+   evas_object_del(data);
+}
+
+void
 _start_cb(void *a, Evas_Object *obj, void *event_info)
 {
    int num_cars = atoi(elm_entry_entry_get(en1));
    int i = 0;
+   Evas_Object *popup = NULL, *btn = NULL;
+
+   if ((num_cars < 2) || (num_cars > 10))
+     {
+        popup = elm_popup_add(en1);
+        elm_object_text_set(popup, "Please select the number of cars between 2 and 10.");
+
+        btn = elm_button_add(popup);
+        elm_object_text_set(btn, "OK");
+        elm_object_part_content_set(popup, "button1", btn);
+        evas_object_smart_callback_add(btn, "clicked", _popup_close_cb, popup);
+
+        evas_object_show(popup);
+
+        return;
+     }
+
+   num_loop = atoi(elm_entry_entry_get(en2));
+   if ((num_loop < 1) || (num_loop > 10))
+     {
+        popup = elm_popup_add(en1);
+        elm_object_text_set(popup, "Please select the number of loops between 1 and 10.");
+
+        btn = elm_button_add(popup);
+        elm_object_text_set(btn, "OK");
+        elm_object_part_content_set(popup, "button1", btn);
+        evas_object_smart_callback_add(btn, "clicked", _popup_close_cb, popup);
+
+        evas_object_show(popup);
+
+        return;
+     }
 
    for (i = 0; i < num_cars; i++)
      {
         num = i;
         create_cars();
      }
-   num_loop = atoi(elm_entry_entry_get(en2));
+
    timer_loop = 0;
    timer = ecore_timer_add(1.0, _timer_cb, NULL);
 }
