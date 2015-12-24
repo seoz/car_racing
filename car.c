@@ -31,7 +31,10 @@ _timer_cb(void *data)
           }
      }
    if (timer_loop >= num_loop)
-      return ECORE_CALLBACK_CANCEL;
+     {
+        timer = NULL;
+        return ECORE_CALLBACK_CANCEL;
+     }
    return ECORE_CALLBACK_RENEW;
 }
 
@@ -75,13 +78,15 @@ _start_cb(void *a, Evas_Object *obj, void *event_info)
 void
 _exit_cb(void *a, Evas_Object *obj, void *event_info)
 {
+   ecore_timer_del(timer);
    elm_exit();
 }
 
 void
 _create_gui(Evas_Object *win)
 {
-   Evas_Object *btn1, *btn2, *label;
+   Evas_Object *btn = NULL, *label = NULL;
+
    box = elm_box_add(win);
    evas_object_size_hint_weight_set(box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
    elm_win_resize_object_add(win, box);
@@ -106,21 +111,21 @@ _create_gui(Evas_Object *win)
    elm_box_pack_end(box, en2);
    evas_object_show(en2);
 
-   btn1 = elm_button_add(box);
-   evas_object_size_hint_weight_set(btn1, EVAS_HINT_EXPAND, 0.0);
-   evas_object_size_hint_align_set(btn1, EVAS_HINT_FILL, EVAS_HINT_FILL);
-   elm_box_pack_end(box, btn1);
-   elm_object_text_set(btn1, "Start!");
-   evas_object_smart_callback_add(btn1, "clicked", _start_cb, NULL);
-   evas_object_show(btn1);
+   btn = elm_button_add(box);
+   evas_object_size_hint_weight_set(btn, EVAS_HINT_EXPAND, 0.0);
+   evas_object_size_hint_align_set(btn, EVAS_HINT_FILL, EVAS_HINT_FILL);
+   elm_box_pack_end(box, btn);
+   elm_object_text_set(btn, "Start!");
+   evas_object_smart_callback_add(btn, "clicked", _start_cb, NULL);
+   evas_object_show(btn);
 
-   btn2 = elm_button_add(box);
-   evas_object_size_hint_weight_set(btn2, EVAS_HINT_EXPAND, 0.0);
-   evas_object_size_hint_align_set(btn2, EVAS_HINT_FILL, EVAS_HINT_FILL);
-   elm_box_pack_end(box, btn2);
-   elm_object_text_set(btn2, "Exit");
-   evas_object_smart_callback_add(btn2, "clicked", _exit_cb, NULL);
-   evas_object_show(btn2);
+   btn = elm_button_add(box);
+   evas_object_size_hint_weight_set(btn, EVAS_HINT_EXPAND, 0.0);
+   evas_object_size_hint_align_set(btn, EVAS_HINT_FILL, EVAS_HINT_FILL);
+   elm_box_pack_end(box, btn);
+   elm_object_text_set(btn, "Exit");
+   evas_object_smart_callback_add(btn, "clicked", _exit_cb, NULL);
+   evas_object_show(btn);
 }
 
 EAPI_MAIN int
