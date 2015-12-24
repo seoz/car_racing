@@ -78,19 +78,9 @@ _exit_cb(void *a, Evas_Object *obj, void *event_info)
    elm_exit();
 }
 
-EAPI_MAIN int
-elm_main(int argc, char **argv)
+void
+_create_gui(Evas_Object *win)
 {
-   Evas_Object *win = NULL;
-   srand(time(NULL));
-
-   elm_policy_set(ELM_POLICY_QUIT, ELM_POLICY_QUIT_LAST_WINDOW_CLOSED);
-
-   win = elm_win_util_standard_add("main", "Main");
-   elm_win_autodel_set(win, EINA_TRUE);
-   evas_object_resize(win, 1024, 800);
-   evas_object_show(win);
-
    Evas_Object *btn1, *btn2, *label;
    box = elm_box_add(win);
    evas_object_size_hint_weight_set(box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
@@ -131,6 +121,23 @@ elm_main(int argc, char **argv)
    elm_object_text_set(btn2, "Exit");
    evas_object_smart_callback_add(btn2, "clicked", _exit_cb, NULL);
    evas_object_show(btn2);
+}
+
+EAPI_MAIN int
+elm_main(int argc, char **argv)
+{
+   Evas_Object *win = NULL;
+   srand(time(NULL));
+
+   elm_policy_set(ELM_POLICY_QUIT, ELM_POLICY_QUIT_LAST_WINDOW_CLOSED);
+
+   win = elm_win_util_standard_add("car-racing", "Car Racing");
+   elm_win_autodel_set(win, EINA_TRUE);
+   evas_object_resize(win, 1024, 800);
+
+   _create_gui(win);
+
+   evas_object_show(win);
 
    elm_run();
 
